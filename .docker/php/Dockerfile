@@ -48,9 +48,16 @@ ENV PATH $PATH:/composer/vendor/bin
 RUN composer config --global process-timeout 3600
 RUN composer global require "laravel/installer"
 
+USER root
 WORKDIR /root
-RUN git clone https://github.com/seebi/dircolors-solarized
-
-EXPOSE 5173
+#RUN git clone https://github.com/seebi/dircolors-solarized
+RUN addgroup --system --gid  1000  www 
+RUN adduser --system --uid 1000 --gid 1000 www
+USER www
+#COPY --chmod=765  public/* /var/www
 WORKDIR /var/www
-RUN chown -R $user:$user /var/www
+#RUN chown -R www:www-data /var/www/storage
+#RUN chmod -R ug+w /var/www/storage
+EXPOSE 5173
+#RUN chown -R $user:$user /var/www
+
